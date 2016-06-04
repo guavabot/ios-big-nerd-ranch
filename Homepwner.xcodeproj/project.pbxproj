@@ -14,6 +14,7 @@
 		824A01D71CFCC95E00642E1D /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824A01D61CFCC95E00642E1D /* ItemsViewController.swift */; };
 		824A01D91CFCCABA00642E1D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824A01D81CFCCABA00642E1D /* Item.swift */; };
 		824A01DB1CFCCFBE00642E1D /* ItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 824A01DA1CFCCFBE00642E1D /* ItemStore.swift */; };
+		82890CE71D02F77A0082C652 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82890CE61D02F77A0082C652 /* ItemCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		824A01D61CFCC95E00642E1D /* ItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		824A01D81CFCCABA00642E1D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		824A01DA1CFCCFBE00642E1D /* ItemStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemStore.swift; sourceTree = "<group>"; };
+		82890CE61D02F77A0082C652 /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				824A01D61CFCC95E00642E1D /* ItemsViewController.swift */,
 				824A01D81CFCCABA00642E1D /* Item.swift */,
 				824A01DA1CFCCFBE00642E1D /* ItemStore.swift */,
+				82890CE61D02F77A0082C652 /* ItemCell.swift */,
 			);
 			path = Homepwner;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				824A01D91CFCCABA00642E1D /* Item.swift in Sources */,
 				824A01DB1CFCCFBE00642E1D /* ItemStore.swift in Sources */,
 				824A01C51CFCBF8900642E1D /* AppDelegate.swift in Sources */,
+				82890CE71D02F77A0082C652 /* ItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
