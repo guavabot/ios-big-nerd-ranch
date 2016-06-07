@@ -19,7 +19,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Jet-FV-sA4" id="DX0-6l-P55">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="65"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="64.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVg-Tq-lJQ">
@@ -89,7 +89,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Use-6A-v8L">
-                                <rect key="frame" x="20" y="72" width="560" height="520"/>
+                                <rect key="frame" x="20" y="72" width="560" height="476"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oxZ-61-in9">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="30"/>
@@ -148,20 +148,39 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Date created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4D0-BT-khh">
-                                        <rect key="frame" x="0.0" y="114" width="560" height="406"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" verticalCompressionResistancePriority="749" misplaced="YES" text="Date created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4D0-BT-khh">
+                                        <rect key="frame" x="0.0" y="114" width="560" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="247" verticalCompressionResistancePriority="748" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d8G-4C-VIa">
+                                        <rect key="frame" x="0.0" y="143" width="560" height="334"/>
+                                    </imageView>
                                 </subviews>
                             </stackView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UGs-Z7-ZYt">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="h4c-GG-R2h"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem systemItem="camera" id="1dL-SO-NQx">
+                                        <connections>
+                                            <action selector="takePicture:" destination="jko-vI-5iO" id="AHK-pz-GQl"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Ldt-ZQ-SGM" firstAttribute="top" secondItem="Use-6A-v8L" secondAttribute="bottom" constant="8" id="FnN-3b-QGY"/>
+                            <constraint firstItem="Ldt-ZQ-SGM" firstAttribute="top" secondItem="UGs-Z7-ZYt" secondAttribute="bottom" id="7Kq-lY-8eR"/>
                             <constraint firstItem="Use-6A-v8L" firstAttribute="leading" secondItem="xJk-DR-UNz" secondAttribute="leadingMargin" id="SLM-oA-zkJ"/>
+                            <constraint firstItem="UGs-Z7-ZYt" firstAttribute="leading" secondItem="xJk-DR-UNz" secondAttribute="leading" id="V0r-MN-CaX"/>
+                            <constraint firstItem="UGs-Z7-ZYt" firstAttribute="top" secondItem="Use-6A-v8L" secondAttribute="bottom" constant="8" id="dqz-fQ-TAU"/>
+                            <constraint firstAttribute="trailing" secondItem="UGs-Z7-ZYt" secondAttribute="trailing" id="jsq-m4-068"/>
                             <constraint firstItem="Use-6A-v8L" firstAttribute="top" secondItem="Tcb-Gg-F0N" secondAttribute="bottom" constant="8" id="niT-fh-41e"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Use-6A-v8L" secondAttribute="trailing" id="yCK-1u-HsT"/>
                         </constraints>
@@ -171,6 +190,7 @@
                     </view>
                     <connections>
                         <outlet property="dateLabel" destination="4D0-BT-khh" id="Fbt-UA-arr"/>
+                        <outlet property="imageView" destination="d8G-4C-VIa" id="W7P-qt-Bhn"/>
                         <outlet property="nameField" destination="SrG-bh-fHt" id="qJZ-s7-2L0"/>
                         <outlet property="serialNumberField" destination="vR7-2o-kbS" id="Qai-jw-ziR"/>
                         <outlet property="valueField" destination="81R-bT-nno" id="mhH-eU-1jx"/>
