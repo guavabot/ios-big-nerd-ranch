@@ -11,12 +11,17 @@ import UIKit
 class ItemsViewController: UITableViewController {
     
     var itemStore: ItemStore!
+    var imageStore: ImageStore!
+    
+//    MARK: - Initializers
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
         navigationItem.leftBarButtonItem = editButtonItem()
     }
+    
+//    MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +36,8 @@ class ItemsViewController: UITableViewController {
         tableView.reloadData()
     }
     
+//    MARK: - Actions
+    
     @IBAction func addNewItem(sender: AnyObject) {
         let newItem = itemStore.createItem()
         if let index = itemStore.allItems.indexOf(newItem) {
@@ -38,6 +45,19 @@ class ItemsViewController: UITableViewController {
             tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowItem" {
+            if let row = tableView.indexPathForSelectedRow?.row {
+                let item = itemStore.allItems[row]
+                let detailViewController = segue.destinationViewController as! DetailViewController
+                detailViewController.item = item
+                detailViewController.imageStore = imageStore
+            }
+        }
+    }
+    
+//    MARK: - UITableViewDataSource
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemStore.allItems.count
@@ -64,6 +84,7 @@ class ItemsViewController: UITableViewController {
             ac.addAction(cancelAction)
             let deleteAction = UIAlertAction(title: "Delete", style: .Destructive, handler: { (action) -> Void in
                 self.itemStore.removeItem(item)
+                self.imageStore.deleteImageForKey(item.itemKey)
                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             })
             ac.addAction(deleteAction)
@@ -73,15 +94,5 @@ class ItemsViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         itemStore.moveItemAtIndex(sourceIndexPath.row, toIndex: destinationIndexPath.row)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowItem" {
-            if let row = tableView.indexPathForSelectedRow?.row {
-                let item = itemStore.allItems[row]
-                let detailViewController = segue.destinationViewController as! DetailViewController
-                detailViewController.item = item
-            }
-        }
     }
 }
