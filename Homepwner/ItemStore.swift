@@ -12,6 +12,18 @@ class ItemStore {
     
     var allItems = [Item]()
     
+    let itemArchiveUrl: NSURL = {
+        let docDirectories = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let docDirectory = docDirectories.first!
+        return docDirectory.URLByAppendingPathComponent("items.archive")
+    }()
+    
+    init() {
+        if let archivedItems = NSKeyedUnarchiver.unarchiveObjectWithFile(itemArchiveUrl.path!) as? [Item] {
+            allItems += archivedItems
+        }
+    }
+    
     func createItem() -> Item {
         let newItem = Item(random: true)
         allItems.append(newItem)
@@ -31,5 +43,10 @@ class ItemStore {
         
         let movedItem = allItems.removeAtIndex(fromIndex)
         allItems.insert(movedItem, atIndex: toIndex)
+    }
+    
+    func saveChanges() -> Bool {
+        print("Saving items to \(itemArchiveUrl.path!)")
+        return NSKeyedArchiver.archiveRootObject(allItems, toFile: itemArchiveUrl.path!)
     }
 }
