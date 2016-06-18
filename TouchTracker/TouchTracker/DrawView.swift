@@ -22,6 +22,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     }
     var longSelectedLineIndex: Int?
     var moveLineRecognizer: UIPanGestureRecognizer!
+    var moveVelocities = [CGFloat]()
     
     @IBInspectable var finishedLineColor: UIColor = UIColor.blackColor() {
         didSet {
@@ -55,7 +56,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     
     func strokeLine(line: Line) {
         let path = UIBezierPath()
-        path.lineWidth = lineThickness
+        path.lineWidth = line.thickness
         path.lineCapStyle = CGLineCap.Round
         
         path.moveToPoint(line.begin)
@@ -95,7 +96,7 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
         for touch in touches {
             let location = touch.locationInView(self)
             let key = NSValue(nonretainedObject: touch)
-            currentLines[key] = Line(begin: location, end: location)
+            currentLines[key] = Line(begin: location, end: location, thickness: lineThickness)
         }
         
         setNeedsDisplay()
@@ -107,7 +108,12 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
         for touch in touches {
             let location = touch.locationInView(self)
             let key = NSValue(nonretainedObject: touch)
-            currentLines[key]?.end = location
+            if var line = currentLines[key] {
+                line.end = location
+                let velocityAvg = moveVelocities.reduce(0, combine: +) / CGFloat(moveVelocities.count)
+                line.thickness = velocityAvg / 100
+                currentLines[key] = line
+            }
         }
         
         setNeedsDisplay()
@@ -211,6 +217,13 @@ class DrawView: UIView, UIGestureRecognizerDelegate {
     
     func moveLine(gestureRecognizer: UIPanGestureRecognizer) {
         print("Pan recognized")
+        
+        if gestureRecognizer.state == .Began || gestureRecognizer.state == .Ended || gestureRecognizer.state == .Cancelled {
+            moveVelocities.removeAll(keepCapacity: false)
+        } else if gestureRecognizer.state == .Changed {
+            let velocity = gestureRecognizer.velocityInView(self)
+            moveVelocities.append(hypot(velocity.x, velocity.y))
+        }
         
         if let index = longSelectedLineIndex {
             if gestureRecognizer.state == .Changed {
