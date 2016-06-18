@@ -8,11 +8,11 @@
 
 import UIKit
 
-class DrawView: UIView {
+class DrawView: UIView, UIGestureRecognizerDelegate {
     
     var currentLines = [NSValue:Line]()
     var finishedLines = [Line]()
-    var selectedLineIndex : Int? {
+    var selectedLineIndex: Int? {
         didSet {
             if selectedLineIndex == nil {
                 let menu = UIMenuController.sharedMenuController()
@@ -20,6 +20,8 @@ class DrawView: UIView {
             }
         }
     }
+    var longSelectedLineIndex: Int?
+    var moveLineRecognizer: UIPanGestureRecognizer!
     
     @IBInspectable var finishedLineColor: UIColor = UIColor.blackColor() {
         didSet {
@@ -77,6 +79,12 @@ class DrawView: UIView {
             let selectedLine = finishedLines[index]
             strokeLine(selectedLine)
         }
+        
+        if let index = longSelectedLineIndex {
+            UIColor.brownColor().setStroke()
+            let selectedLine = finishedLines[index]
+            strokeLine(selectedLine)
+        }
     }
     
 //    MARK: - Touch responder
@@ -130,6 +138,8 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
+    //    MARK: - GestureRecognizers
+    
     func addGestureRecognizers() {
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
@@ -140,9 +150,15 @@ class DrawView: UIView {
         tapRecognizer.delaysTouchesBegan = true
         tapRecognizer.requireGestureRecognizerToFail(doubleTapRecognizer)
         addGestureRecognizer(tapRecognizer)
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
+        addGestureRecognizer(longPressRecognizer)
+        
+        moveLineRecognizer = UIPanGestureRecognizer(target: self, action: #selector(moveLine(_:)))
+        moveLineRecognizer.delegate = self
+        moveLineRecognizer.cancelsTouchesInView = false
+        addGestureRecognizer(moveLineRecognizer)
     }
-    
-//    MARK: - GestureRecognizer
     
     func doubleTap(gestureRecognizer: UIGestureRecognizer) {
         print("Double tap recognized")
@@ -176,6 +192,40 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
+    func longPress(gestureRecognizer: UIGestureRecognizer) {
+        print("Long press recognized")
+        
+        if gestureRecognizer.state == .Began {
+            let point = gestureRecognizer.locationInView(self)
+            selectedLineIndex = nil
+            longSelectedLineIndex = indexOfLineAtPoint(point)
+            if longSelectedLineIndex != nil {
+                currentLines.removeAll(keepCapacity: false)
+            }
+        } else if gestureRecognizer.state == .Ended {
+            longSelectedLineIndex = nil
+        }
+        
+        setNeedsDisplay()
+    }
+    
+    func moveLine(gestureRecognizer: UIPanGestureRecognizer) {
+        print("Pan recognized")
+        
+        if let index = longSelectedLineIndex {
+            if gestureRecognizer.state == .Changed {
+                let translation = gestureRecognizer.translationInView(self)
+                finishedLines[index].begin.x += translation.x
+                finishedLines[index].begin.y += translation.y
+                finishedLines[index].end.x += translation.x
+                finishedLines[index].end.y += translation.y
+                
+                gestureRecognizer.setTranslation(CGPoint.zero, inView: self)
+                setNeedsDisplay()
+            }
+        }
+    }
+    
     func indexOfLineAtPoint(point: CGPoint) -> Int? {
         for (index, line) in finishedLines.enumerate() {
             let begin = line.begin
@@ -200,5 +250,9 @@ class DrawView: UIView {
             
             setNeedsDisplay()
         }
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
